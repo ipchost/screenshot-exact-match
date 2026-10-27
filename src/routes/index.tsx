@@ -76,9 +76,10 @@ function Index() {
 
             <nav className="hidden items-center gap-7 text-sm font-semibold text-white/90 lg:flex xl:gap-9">
               <a className="transition hover:text-[#c7f58c]" href="#projects">Проекты</a>
-              <a className="transition hover:text-[#c7f58c]" href="#advantages">Преимущества</a>
-              <a className="transition hover:text-[#c7f58c]" href="#how">Как это работает</a>
-              <a className="transition hover:text-[#c7f58c]" href="#teams">Бригадам</a>
+              <a className="transition hover:text-[#c7f58c]" href="/screenshot-exact-match/constructor">Конструктор</a>
+              <a className="transition hover:text-[#c7f58c]" href="/screenshot-exact-match/calculator">Калькулятор</a>
+              <a className="transition hover:text-[#c7f58c]" href="/screenshot-exact-match/customer">Заказчику</a>
+              <a className="transition hover:text-[#c7f58c]" href="/screenshot-exact-match/brigade">Бригадам</a>
             </nav>
 
             <a
@@ -103,9 +104,12 @@ function Index() {
             <nav className="absolute left-0 right-0 top-full z-40 grid gap-1 border-b border-white/15 bg-[#183322] p-4 shadow-2xl lg:hidden">
               {[
                 ["Проекты", "#projects"],
+                ["Конструктор", "/screenshot-exact-match/constructor"],
+                ["Калькулятор", "/screenshot-exact-match/calculator"],
+                ["Заказчику", "/screenshot-exact-match/customer"],
+                ["Бригадам", "/screenshot-exact-match/brigade"],
                 ["Преимущества", "#advantages"],
                 ["Как это работает", "#how"],
-                ["Бригадам", "#teams"],
               ].map(([label, href]) => (
                 <a
                   key={href}
