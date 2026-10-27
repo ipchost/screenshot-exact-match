@@ -10,11 +10,37 @@ function BrigadePage() {
   const [checked, setChecked] = useState(false);
   const [status, setStatus] = useState("");
 
-  function submit(e: React.FormEvent<HTMLFormElement>) {
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus(
-      "Проверка пройдена. Сервер ещё не подключён, поэтому анкета не отправлена и не сохранена."
-    );
+    const formElement = e.currentTarget;
+    const form = new FormData(formElement);
+    setStatus("Отправляем анкету...");
+    try {
+      const response = await fetch("https://sterling-repository-introduction-wondering.trycloudflare.com/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "brigade",
+      name: String(form.get("name") || ""),
+      phone: String(form.get("phone") || ""),
+      region: String(form.get("region") || ""),
+      specialty: String(form.get("specialty") || ""),
+      experience: String(form.get("experience") || ""), 
+          consent: checked,
+        }),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "Не удалось отправить анкету");
+      }
+      setStatus(`Заявка отправлена! Номер: ${result.requestId}`);
+      e.currentTarget.reset();
+      setChecked(false);
+    } catch (error) {
+      setStatus(error instanceof Error
+        ? error.message
+        : "Ошибка отправки. Попробуйте позже.");
+    }
   }
 
   return (
@@ -79,7 +105,7 @@ function BrigadePage() {
           </p>
 
           <button type="submit" className="rounded-full bg-green-800 px-6 py-3 font-semibold text-white">
-            Проверить анкету
+            Отправить заявку
           </button>
 
           {status && <p role="status" className="rounded-xl bg-amber-50 p-4 text-sm text-amber-950">{status}</p>}
