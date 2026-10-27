@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BrigadeRouteImport } from './routes/brigade'
+import { Route as CalculatorRouteImport } from './routes/calculator'
+import { Route as ConstructorRouteImport } from './routes/constructor'
+import { Route as CustomerRouteImport } from './routes/customer'
+import { Route as ProjectsRouteImport } from './routes/projects'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrigadeRoute = BrigadeRouteImport.update({
+  id: '/brigade',
+  path: '/brigade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalculatorRoute = CalculatorRouteImport.update({
+  id: '/calculator',
+  path: '/calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConstructorRoute = ConstructorRouteImport.update({
+  id: '/constructor',
+  path: '/constructor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomerRoute = CustomerRouteImport.update({
+  id: '/customer',
+  path: '/customer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/brigade': typeof BrigadeRoute
+  '/calculator': typeof CalculatorRoute
+  '/constructor': typeof ConstructorRoute
+  '/customer': typeof CustomerRoute
+  '/projects': typeof ProjectsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/brigade': typeof BrigadeRoute
+  '/calculator': typeof CalculatorRoute
+  '/constructor': typeof ConstructorRoute
+  '/customer': typeof CustomerRoute
+  '/projects': typeof ProjectsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/brigade': typeof BrigadeRoute
+  '/calculator': typeof CalculatorRoute
+  '/constructor': typeof ConstructorRoute
+  '/customer': typeof CustomerRoute
+  '/projects': typeof ProjectsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/brigade'
+    | '/calculator'
+    | '/constructor'
+    | '/customer'
+    | '/projects'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/brigade'
+    | '/calculator'
+    | '/constructor'
+    | '/customer'
+    | '/projects'
+  id:
+    | '__root__'
+    | '/'
+    | '/brigade'
+    | '/calculator'
+    | '/constructor'
+    | '/customer'
+    | '/projects'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BrigadeRoute: typeof BrigadeRoute
+  CalculatorRoute: typeof CalculatorRoute
+  ConstructorRoute: typeof ConstructorRoute
+  CustomerRoute: typeof CustomerRoute
+  ProjectsRoute: typeof ProjectsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brigade': {
+      id: '/brigade'
+      path: '/brigade'
+      fullPath: '/brigade'
+      preLoaderRoute: typeof BrigadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calculator': {
+      id: '/calculator'
+      path: '/calculator'
+      fullPath: '/calculator'
+      preLoaderRoute: typeof CalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/constructor': {
+      id: '/constructor'
+      path: '/constructor'
+      fullPath: '/constructor'
+      preLoaderRoute: typeof ConstructorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/customer': {
+      id: '/customer'
+      path: '/customer'
+      fullPath: '/customer'
+      preLoaderRoute: typeof CustomerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BrigadeRoute: BrigadeRoute,
+  CalculatorRoute: CalculatorRoute,
+  ConstructorRoute: ConstructorRoute,
+  CustomerRoute: CustomerRoute,
+  ProjectsRoute: ProjectsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
