@@ -9,6 +9,10 @@ export const Route = createFileRoute("/constructor")({
 
 function ConstructorPage() {
   const [config, setConfig] = useState<HouseConfig>(DEFAULT_CONFIG);
+  const [lengthInput, setLengthInput] = useState(String(DEFAULT_CONFIG.length));
+  const [widthInput, setWidthInput] = useState(String(DEFAULT_CONFIG.width));
+  const [terraceInput, setTerraceInput] = useState(String(DEFAULT_CONFIG.terraceArea));
+  const parseInput = (value: string) => Number(value.replace(",", "."));
   const update = (patch: Partial<HouseConfig>) =>
     setConfig((current) => ({ ...current, ...patch }));
 
@@ -34,13 +38,35 @@ function ConstructorPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block text-sm font-medium">
                 Длина, м
-                <input className="field mt-2" type="number" min="4" max="20" value={config.length}
-                  onChange={(e) => update({ length: Math.max(4, Number(e.target.value) || 4) })} />
+                <input className="field mt-2" type="text" inputMode="decimal" value={lengthInput}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setLengthInput(value);
+                    const n = parseInput(value);
+                    if (value.trim() !== "" && Number.isFinite(n)) update({ length: n });
+                  }}
+                  onBlur={() => {
+                    const n = parseInput(lengthInput);
+                    const value = String(Math.min(20, Math.max(4, Number.isFinite(n) && lengthInput.trim() !== "" ? n : config.length)));
+                    setLengthInput(value);
+                    update({ length: Number(value) });
+                  }} />
               </label>
               <label className="block text-sm font-medium">
                 Ширина, м
-                <input className="field mt-2" type="number" min="4" max="15" value={config.width}
-                  onChange={(e) => update({ width: Math.max(4, Number(e.target.value) || 4) })} />
+                <input className="field mt-2" type="text" inputMode="decimal" value={widthInput}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setWidthInput(value);
+                    const n = parseInput(value);
+                    if (value.trim() !== "" && Number.isFinite(n)) update({ width: n });
+                  }}
+                  onBlur={() => {
+                    const n = parseInput(widthInput);
+                    const value = String(Math.min(15, Math.max(4, Number.isFinite(n) && widthInput.trim() !== "" ? n : config.width)));
+                    setWidthInput(value);
+                    update({ width: Number(value) });
+                  }} />
               </label>
             </div>
 
@@ -101,8 +127,19 @@ function ConstructorPage() {
             {config.terrace && (
               <label className="block text-sm font-medium">
                 Площадь террасы, м²
-                <input className="field mt-2" type="number" min="0" max="100" value={config.terraceArea}
-                  onChange={(e) => update({ terraceArea: Math.max(0, Number(e.target.value) || 0) })} />
+                <input className="field mt-2" type="text" inputMode="decimal" value={terraceInput}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setTerraceInput(value);
+                    const n = parseInput(value);
+                    if (value.trim() !== "" && Number.isFinite(n)) update({ terraceArea: n });
+                  }}
+                  onBlur={() => {
+                    const n = parseInput(terraceInput);
+                    const value = String(Math.min(100, Math.max(0, Number.isFinite(n) && terraceInput.trim() !== "" ? n : config.terraceArea)));
+                    setTerraceInput(value);
+                    update({ terraceArea: Number(value) });
+                  }} />
               </label>
             )}
           </div>

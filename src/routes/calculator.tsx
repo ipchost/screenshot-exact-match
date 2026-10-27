@@ -11,6 +11,9 @@ function CalculatorPage() {
   const [config, setConfig] = useState<HouseConfig>(DEFAULT_CONFIG);
   const [pkg, setPkg] = useState<PackageId>(DEFAULT_CONFIG.package);
   const [loadedSavedConfig, setLoadedSavedConfig] = useState(false);
+  const [lengthInput, setLengthInput] = useState(String(DEFAULT_CONFIG.length));
+  const [widthInput, setWidthInput] = useState(String(DEFAULT_CONFIG.width));
+  const parseInput = (value: string) => Number(value.replace(",", "."));
 
   useEffect(() => {
     try {
@@ -19,6 +22,8 @@ function CalculatorPage() {
         const parsed = JSON.parse(saved) as Partial<HouseConfig>;
         const next = { ...DEFAULT_CONFIG, ...parsed };
         setConfig(next);
+        setLengthInput(String(next.length));
+        setWidthInput(String(next.width));
         setPkg(next.package);
         sessionStorage.removeItem("karcason-house-config");
       }
@@ -48,14 +53,40 @@ function CalculatorPage() {
 
             <label className="block text-sm font-medium">
               Длина, м
-              <input className="field mt-2" type="number" min="4" max="20" value={config.length}
-                onChange={(e) => update({ length: Math.max(4, Number(e.target.value) || 4), area: Math.max(4, Number(e.target.value) || 4) * config.width * config.floors })} />
+              <input className="field mt-2" type="text" inputMode="decimal" value={lengthInput}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setLengthInput(value);
+                  const n = parseInput(value);
+                  if (value.trim() !== "" && Number.isFinite(n)) {
+                    update({ length: n, area: n * config.width * config.floors });
+                  }
+                }}
+                onBlur={() => {
+                  const n = parseInput(lengthInput);
+                  const value = String(Math.min(20, Math.max(4, Number.isFinite(n) && lengthInput.trim() !== "" ? n : config.length)));
+                  setLengthInput(value);
+                  update({ length: Number(value), area: Number(value) * config.width * config.floors });
+                }} />
             </label>
 
             <label className="block text-sm font-medium">
               Ширина, м
-              <input className="field mt-2" type="number" min="4" max="15" value={config.width}
-                onChange={(e) => update({ width: Math.max(4, Number(e.target.value) || 4), area: config.length * Math.max(4, Number(e.target.value) || 4) * config.floors })} />
+              <input className="field mt-2" type="text" inputMode="decimal" value={widthInput}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setWidthInput(value);
+                  const n = parseInput(value);
+                  if (value.trim() !== "" && Number.isFinite(n)) {
+                    update({ width: n, area: config.length * n * config.floors });
+                  }
+                }}
+                onBlur={() => {
+                  const n = parseInput(widthInput);
+                  const value = String(Math.min(15, Math.max(4, Number.isFinite(n) && widthInput.trim() !== "" ? n : config.width)));
+                  setWidthInput(value);
+                  update({ width: Number(value), area: config.length * Number(value) * config.floors });
+                }} />
             </label>
 
             <label className="block text-sm font-medium">
