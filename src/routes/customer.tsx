@@ -15,35 +15,40 @@ function CustomerPage() {
     const formElement = e.currentTarget;
     const form = new FormData(formElement);
     setStatus("Отправляем заявку...");
+
+    const payload = new FormData();
+    payload.append("name", String(form.get("name") || ""));
+    payload.append("phone", "+7" + String(form.get("phone") || ""));
+    payload.append("location", String(form.get("location") || ""));
+    payload.append("area", String(form.get("area") || ""));
+    payload.append("time", String(form.get("time") || ""));
+    payload.append("details", String(form.get("details") || ""));
+    payload.append("consent", checked ? "Да" : "Нет");
+    payload.append("_subject", "Новая заявка заказчика | Каркасон");
+
     try {
-      const response = await fetch("https://sterling-repository-introduction-wondering.trycloudflare.com/api/submit", {
+      const response = await fetch("https://formspree.io/f/xrppkgpk", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "customer",
-          name: String(form.get("name") || ""),
-          phone: "+7" + String(form.get("phone") || ""),
-          location: String(form.get("location") || ""),
-          area: String(form.get("area") || ""),
-          time: String(form.get("time") || ""),
-          details: String(form.get("details") || ""),
-          consent: checked,
-        }),
+        body: payload,
+        headers: { "Accept": "application/json" },
       });
+
       const result = await response.json();
-      if (!response.ok || !result.ok) {
-        throw new Error(result.error || "Не удалось отправить заявку");
+
+      if (!response.ok) {
+        throw new Error(
+          result.errors?.map((item: { message: string }) => item.message).join(", ")
+          || "Не удалось отправить заявку. Проверьте настройки Formspree."
+        );
       }
+
       setStatus("success");
       formElement.reset();
       setChecked(false);
-    } catch (error) {
-      setStatus(error instanceof Error
-        ? error.message
-        : "Не удалось отправить заявку. Попробуйте позже.");
+    } catch {
+      setStatus("Не удалось отправить заявку. Проверьте подключение к интернету и попробуйте позже.");
     }
   }
-
   return (
     <SiteLayout>
       <section className="container-x py-12">
