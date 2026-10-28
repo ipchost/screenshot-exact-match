@@ -22,7 +22,7 @@ function CustomerPage() {
         body: JSON.stringify({
           type: "customer",
           name: String(form.get("name") || ""),
-          phone: String(form.get("phone") || ""),
+          phone: "+7" + String(form.get("phone") || ""),
           location: String(form.get("location") || ""),
           area: String(form.get("area") || ""),
           time: String(form.get("time") || ""),
@@ -63,7 +63,25 @@ function CustomerPage() {
 
           <label className="block text-sm font-medium">
             Телефон *
-            <input className="field mt-2" name="phone" type="tel" required maxLength={30} placeholder="+7 ..." />
+            <div className="mt-2 flex">
+              <span className="flex items-center rounded-l-xl border border-r-0 border-slate-300 bg-slate-100 px-4 font-semibold text-slate-700">+7</span>
+              <input
+                className="field mt-0 min-w-0 rounded-l-none"
+                name="phone"
+                type="tel"
+                inputMode="numeric"
+                autoComplete="tel-national"
+                required
+                maxLength={10}
+                pattern="9[0-9]{9}"
+                title="Введите 10 цифр российского номера, начиная с 9"
+                placeholder="9123456789"
+                onChange={(e) => {
+                  const digits = e.target.value.replace(/\D/g, "").replace(/^7/, "").replace(/^8/, "").slice(0, 10);
+                  e.target.value = digits;
+                }}
+              />
+            </div>
           </label>
 
           <label className="block text-sm font-medium">
