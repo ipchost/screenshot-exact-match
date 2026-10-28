@@ -16,45 +16,42 @@ function BrigadePage() {
     const form = new FormData(formElement);
     setStatus("Отправляем заявку...");
 
-    const payload = new FormData();
-    payload.append("name", String(form.get("name") || ""));
-    payload.append("phone", "+7" + String(form.get("phone") || ""));
-    payload.append("region", String(form.get("region") || ""));
-    payload.append("specialty", String(form.get("specialty") || ""));
-    payload.append("experience", String(form.get("experience") || ""));
-    payload.append("consent", checked ? "Да" : "Нет");
-    payload.append("submitted_at", new Date().toISOString());
-    payload.append("page_url", window.location.href);
-    payload.append("referrer", document.referrer || "Прямой переход или источник скрыт");
-    payload.append("user_agent", navigator.userAgent);
-    payload.append("language", navigator.language || "Не определён");
-    payload.append("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone || "Не определён");
-    payload.append("screen_resolution", `${window.screen.width}x${window.screen.height}`);
-    payload.append("viewport", `${window.innerWidth}x${window.innerHeight}`);
-    payload.append("platform", navigator.platform || "Не определена");
-    payload.append("_subject", "Новая заявка строительной бригады | Каркасон");
+    const payload = {
+      type: "brigade",
+      name: String(form.get("name") || ""),
+      region: String(form.get("region") || ""),
+      specialty: String(form.get("specialty") || ""),
+      experience: String(form.get("experience") || ""),
+      phone: "+7" + String(form.get("phone") || ""),
+      consent: checked,
+      submitted_at: new Date().toISOString(),
+      page_url: window.location.href,
+      referrer: document.referrer || "Прямой переход или источник скрыт",
+      user_agent: navigator.userAgent,
+      language: navigator.language || "Не определён",
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Не определён",
+      screen_resolution: `${window.screen.width}x${window.screen.height}`,
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      platform: navigator.platform || "Не определена",
+      website: "",
+    };
 
     try {
-      const response = await fetch("https://formspree.io/f/mwllbkoo", {
+      const response = await fetch("https://sterling-repository-introduction-wondering.trycloudflare.com/api/submit", {
         method: "POST",
-        body: payload,
-        headers: { "Accept": "application/json" },
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(payload),
       });
-
       const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          result.errors?.map((item: { message: string }) => item.message).join(", ")
-          || "Не удалось отправить заявку. Проверьте настройки Formspree."
-        );
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "Не удалось отправить заявку.");
       }
-
       setStatus("success");
       formElement.reset();
       setChecked(false);
-    } catch {
-      setStatus("Не удалось отправить заявку. Проверьте подключение к интернету и попробуйте позже.");
+    } catch (error) {
+      console.error("Ошибка отправки заявки:", error);
+      setStatus("Не удалось отправить заявку. Проверьте подключение и попробуйте позже.");
     }
   }
   return (
