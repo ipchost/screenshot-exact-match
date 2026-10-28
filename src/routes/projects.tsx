@@ -10,6 +10,7 @@ export const Route = createFileRoute("/projects")({
 
 const projects = [
   {
+    id: "compact",
     name: "Компактный",
     area: "Около 55 м²",
     floors: "1 этаж",
@@ -18,6 +19,7 @@ const projects = [
     description: "Практичная планировка без лишней площади.",
   },
   {
+    id: "terrace",
     name: "Дом с террасой",
     area: "Около 73 м²",
     floors: "1 этаж",
@@ -26,6 +28,7 @@ const projects = [
     description: "Общая зона и место для отдыха на свежем воздухе.",
   },
   {
+    id: "two-storey",
     name: "Двухэтажный",
     area: "Около 100 м²",
     floors: "2 этажа",
@@ -67,6 +70,7 @@ function ProjectsPage() {
                 <p className="mt-3 text-sm text-slate-500">{project.rooms}</p>
                 <Link
                   to="/constructor"
+                  search={{ project: project.id }}
                   className="mt-6 inline-flex rounded-full bg-green-800 px-5 py-3 font-semibold text-white transition hover:bg-green-700"
                 >
                   Настроить проект

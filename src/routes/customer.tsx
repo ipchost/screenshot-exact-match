@@ -49,16 +49,15 @@ function CustomerPage() {
       <section className="container-x py-12">
         <p className="eyebrow">Для заказчиков</p>
         <h1 className="mt-3 text-4xl font-bold md:text-5xl">
-          Расскажи, какой дом тебе нужен
+          Расскажите, какой дом Вам нужен
         </h1>
         <p className="mt-4 max-w-2xl text-slate-600">
-          Подготовь исходные данные о доме и участке. После подключения сервера
-          анкету можно будет передавать строительным бригадам.
+          Укажите основные параметры дома и участка. Отправленная заявка поступит оператору платформы для дальнейшей связи с Вами.
         </p>
 
         <form onSubmit={submit} className="card-x mt-8 max-w-3xl space-y-5 p-6 md:p-8">
           <label className="block text-sm font-medium">
-            Как к тебе обращаться *
+            Как к Вам обращаться *
             <input className="field mt-2" name="name" required maxLength={100} placeholder="Имя" />
           </label>
 
@@ -84,7 +83,7 @@ function CustomerPage() {
           </label>
 
           <label className="block text-sm font-medium">
-            Когда планируешь строительство?
+            Когда Вы планируете строительство?
             <select className="field mt-2" name="time" defaultValue="3-6">
               <option value="urgent">Как можно скорее</option>
               <option value="1-3">В течение 1–3 месяцев</option>
@@ -109,7 +108,7 @@ function CustomerPage() {
           </label>
 
           <p className="text-sm text-amber-800">
-            Нажимая кнопку, ты отправляешь заявку оператору платформы для связи по указанному телефону.
+            Нажимая кнопку, Вы отправляете заявку оператору платформы для связи по указанному телефону.
           </p>
 
           <button

@@ -3,15 +3,63 @@ import { useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { DEFAULT_CONFIG, LABELS, type HouseConfig } from "@/lib/config";
 
+type ProjectId = "compact" | "terrace" | "two-storey";
+
 export const Route = createFileRoute("/constructor")({
+  validateSearch: (search: Record<string, unknown>): { project?: ProjectId } => ({
+    project:
+      search.project === "compact" ||
+      search.project === "terrace" ||
+      search.project === "two-storey"
+        ? search.project
+        : undefined,
+  }),
   component: ConstructorPage,
 });
 
 function ConstructorPage() {
-  const [config, setConfig] = useState<HouseConfig>(DEFAULT_CONFIG);
-  const [lengthInput, setLengthInput] = useState(String(DEFAULT_CONFIG.length));
-  const [widthInput, setWidthInput] = useState(String(DEFAULT_CONFIG.width));
-  const [terraceInput, setTerraceInput] = useState(String(DEFAULT_CONFIG.terraceArea));
+  const { project } = Route.useSearch();
+
+  const projectConfig: HouseConfig =
+    project === "compact"
+      ? {
+          ...DEFAULT_CONFIG,
+          length: 7.5,
+          width: 7.5,
+          area: 56.25,
+          floors: 1,
+          terrace: false,
+          terraceArea: 0,
+          balcony: false,
+        }
+      : project === "terrace"
+        ? {
+            ...DEFAULT_CONFIG,
+            length: 9,
+            width: 8.1,
+            area: 72.9,
+            floors: 1,
+            terrace: true,
+            terraceArea: 14,
+            balcony: false,
+          }
+        : project === "two-storey"
+          ? {
+              ...DEFAULT_CONFIG,
+              length: 8,
+              width: 6.25,
+              area: 100,
+              floors: 2,
+              terrace: false,
+              terraceArea: 0,
+              balcony: true,
+            }
+          : DEFAULT_CONFIG;
+
+  const [config, setConfig] = useState<HouseConfig>(() => projectConfig);
+  const [lengthInput, setLengthInput] = useState(String(projectConfig.length));
+  const [widthInput, setWidthInput] = useState(String(projectConfig.width));
+  const [terraceInput, setTerraceInput] = useState(String(projectConfig.terraceArea));
   const parseInput = (value: string) => Number(value.replace(",", "."));
   const update = (patch: Partial<HouseConfig>) =>
     setConfig((current) => ({ ...current, ...patch }));
@@ -20,9 +68,9 @@ function ConstructorPage() {
     <SiteLayout>
       <section className="container-x py-12">
         <p className="eyebrow">Конструктор дома</p>
-        <h1 className="mt-3 text-4xl font-bold md:text-5xl">Собери свою комплектацию</h1>
+        <h1 className="mt-3 text-4xl font-bold md:text-5xl">Соберите свою комплектацию</h1>
         <p className="mt-4 max-w-2xl text-slate-600">
-          Настрой основные характеристики дома. Результат можно передать в калькулятор для предварительного расчёта.
+          Настройте основные характеристики дома. Результат можно передать в калькулятор для предварительного расчёта.
         </p>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_0.8fr]">
@@ -145,7 +193,7 @@ function ConstructorPage() {
           </div>
 
           <aside className="card-x h-fit p-6">
-            <p className="eyebrow">Твоя конфигурация</p>
+            <p className="eyebrow">Ваша конфигурация</p>
             <h2 className="mt-3 text-2xl font-bold">
               {config.length} × {config.width} м
             </h2>

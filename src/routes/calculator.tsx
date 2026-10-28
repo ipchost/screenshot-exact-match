@@ -44,7 +44,7 @@ function CalculatorPage() {
         <p className="eyebrow">Предварительная смета</p>
         <h1 className="mt-3 text-4xl font-bold md:text-5xl">Калькулятор стоимости</h1>
         <p className="mt-4 max-w-2xl text-slate-600">
-          Меняй основные параметры и сравни комплектации. Расчёт использует демонстрационный каталог цен и не является коммерческим предложением.
+          Меняйте основные параметры и сравнивайте комплектации. Расчёт использует демонстрационный каталог цен и не является коммерческим предложением.
         </p>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_0.85fr]">
@@ -163,7 +163,7 @@ function CalculatorPage() {
 
             {warnings.length > 0 && (
               <div className="rounded-2xl bg-amber-50 p-5 text-sm text-amber-950">
-                <h3 className="font-bold">Проверь конфигурацию</h3>
+                <h3 className="font-bold">Проверьте конфигурацию</h3>
                 <ul className="mt-2 list-disc space-y-2 pl-5">
                   {warnings.map((warning) => <li key={warning}>{warning}</li>)}
                 </ul>

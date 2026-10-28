@@ -22,6 +22,7 @@ export const Route = createFileRoute("/")({
 const projects = [
   {
     number: "01",
+    id: "compact",
     name: "Компактный",
     size: "от 60 м²",
     image: compact,
@@ -29,6 +30,7 @@ const projects = [
   },
   {
     number: "02",
+    id: "terrace",
     name: "С террасой",
     size: "от 90 м²",
     image: terrace,
@@ -36,6 +38,7 @@ const projects = [
   },
   {
     number: "03",
+    id: "two-storey",
     name: "Два этажа",
     size: "от 120 м²",
     image: twoStorey,
@@ -143,7 +146,7 @@ function Index() {
               <br />
               <span className="text-[#c7f58c]">начинается</span>
               <br />
-              с вашей идеи.
+              с вашей идеи
             </h1>
 
             <p className="mt-6 max-w-2xl text-base leading-7 text-white/90 sm:mt-8 sm:text-lg sm:leading-8 lg:text-xl">
@@ -235,7 +238,7 @@ function Index() {
                     {project.text}
                   </p>
                   <a
-                    href="#how"
+                    href={`/screenshot-exact-match/constructor?project=${project.id}`}
                     className="mt-5 inline-flex items-center gap-2 font-extrabold text-[#28653a] transition hover:text-[#153d24]"
                   >
                     Обсудить проект <ArrowRight size={18} />
@@ -305,7 +308,7 @@ function Index() {
               Следующий шаг
             </p>
             <h2 className="mt-4 text-3xl font-black leading-tight tracking-[-.04em] sm:text-4xl lg:text-5xl">
-              Дом начинается не со стройки, а с хорошего плана.
+              Дом начинается не со стройки, а с хорошего плана
             </h2>
             <p className="mt-4 text-base leading-7 text-[#3f5144] sm:text-lg sm:leading-8">
               Конструктор и подробная предварительная смета станут основой для
@@ -336,7 +339,7 @@ function Index() {
             </p>
           </div>
           <a
-            href="mailto:info@example.com"
+            href="mailto:lenkarkason@gmail.com"
             className="inline-flex min-h-14 items-center justify-center gap-3 rounded-full border-2 border-[#246638] px-6 py-4 font-extrabold text-[#246638] transition hover:bg-[#e8f4df]"
           >
             Связаться с платформой <ArrowRight size={18} />
