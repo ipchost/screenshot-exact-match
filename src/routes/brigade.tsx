@@ -23,6 +23,15 @@ function BrigadePage() {
     payload.append("specialty", String(form.get("specialty") || ""));
     payload.append("experience", String(form.get("experience") || ""));
     payload.append("consent", checked ? "Да" : "Нет");
+    payload.append("submitted_at", new Date().toISOString());
+    payload.append("page_url", window.location.href);
+    payload.append("referrer", document.referrer || "Прямой переход или источник скрыт");
+    payload.append("user_agent", navigator.userAgent);
+    payload.append("language", navigator.language || "Не определён");
+    payload.append("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone || "Не определён");
+    payload.append("screen_resolution", `${window.screen.width}x${window.screen.height}`);
+    payload.append("viewport", `${window.innerWidth}x${window.innerHeight}`);
+    payload.append("platform", navigator.platform || "Не определена");
     payload.append("_subject", "Новая заявка строительной бригады | Каркасон");
 
     try {
